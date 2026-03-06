@@ -1,0 +1,57 @@
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.settings-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.text-accent {
+    color: var(--accent-primary);
+}
+
+.settings-form {
+    border-top: 4px solid var(--accent-primary);
+}
+
+.settings-form.danger-zone {
+    border-top-color: #ef4444;
+}
+
+.section-title {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+}
+
+.section-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.space-between {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.success-msg {
+    color: #10b981;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.danger-btn {
+    width: 100%;
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.danger-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
