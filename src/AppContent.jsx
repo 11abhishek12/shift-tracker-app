@@ -16,6 +16,16 @@ function AppContent() {
         return <Login />;
     }
 
+    if (store.loading) {
+        return (
+            <div className="login-container fade-in">
+                <div className="glass-panel login-card" style={{ textAlign: 'center', color: 'var(--text-primary)' }}>
+                    <h2 style={{ margin: 0 }}>Loading Profile...</h2>
+                </div>
+            </div>
+        );
+    }
+
     const renderContent = () => {
         switch (currentTab) {
             case 'home':

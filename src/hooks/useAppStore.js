@@ -18,7 +18,10 @@ export const useAppStore = () => {
     // Load User Data from Firestore on mount/login
     useEffect(() => {
         async function loadUserData() {
-            if (!currentUser) return;
+            if (!currentUser) {
+                setState(defaultState);
+                return;
+            }
 
             setLoading(true);
             try {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Settings as SettingsIcon, RotateCcw, Save, LogOut } from 'lucide-react';
 import { SHIFT_SEQUENCE } from '../utils/shiftLogic';
 import { useAuth } from '../contexts/AuthContext';
@@ -10,10 +10,15 @@ const Settings = ({ store }) => {
     const [refShift, setRefShift] = useState(store.refShift);
     const [saveMessage, setSaveMessage] = useState('');
 
+    useEffect(() => {
+        setRefDate(store.refDate);
+        setRefShift(store.refShift);
+    }, [store.refDate, store.refShift]);
+
     const handleSave = async () => {
         store.updateSettings(refDate, refShift);
-        setSaveMessage('Settings saved successfully!');
-        setTimeout(() => setSaveMessage(''), 3000);
+        setSaveMessage('Settings saved successfully! Syncing...');
+        setTimeout(() => setSaveMessage(''), 4000);
     };
 
     const handleResetHolidays = async () => {
