@@ -9,6 +9,7 @@ const Settings = ({ store }) => {
     const [refDate, setRefDate] = useState(store.refDate);
     const [refShift, setRefShift] = useState(store.refShift);
     const [saveMessage, setSaveMessage] = useState('');
+    const [error, setError] = useState('');
 
     useEffect(() => {
         setRefDate(store.refDate);
@@ -16,9 +17,14 @@ const Settings = ({ store }) => {
     }, [store.refDate, store.refShift]);
 
     const handleSave = async () => {
-        store.updateSettings(refDate, refShift);
-        setSaveMessage('Settings saved successfully! Syncing...');
-        setTimeout(() => setSaveMessage(''), 4000);
+        setError('');
+        await store.updateSettings(refDate, refShift);
+        if (!store.error) {
+            setSaveMessage('Settings saved successfully!');
+            setTimeout(() => setSaveMessage(''), 4000);
+        } else {
+            setError(store.error);
+        }
     };
 
     const handleResetHolidays = async () => {
@@ -74,9 +80,9 @@ const Settings = ({ store }) => {
                 </div>
 
                 <div className="form-actions space-between mt-4">
-                    <span className="success-msg">{saveMessage}</span>
-                    <button className="btn-primary" onClick={handleSave} disabled={store.loading}>
-                        <Save size={18} style={{ marginRight: '8px' }} /> Save Configuration
+                    <span className="success-msg">{error || saveMessage}</span>
+                    <button className="btn-primary" onClick={handleSave} disabled={store.loading || store.isSaving}>
+                        <Save size={18} style={{ marginRight: '8px' }} /> {store.isSaving ? 'Saving...' : 'Save Configuration'}
                     </button>
                 </div>
             </div>
@@ -87,8 +93,8 @@ const Settings = ({ store }) => {
                     Reset the holiday list back to the default 2026 Gazetted and Restricted holidays list.
                 </p>
 
-                <button className="btn-secondary danger-btn mt-4" onClick={handleResetHolidays} disabled={store.loading}>
-                    <RotateCcw size={18} style={{ marginRight: '8px' }} /> Factory Reset Holidays
+                <button className="btn-secondary danger-btn mt-4" onClick={handleResetHolidays} disabled={store.loading || store.isSaving}>
+                    <RotateCcw size={18} style={{ marginRight: '8px' }} /> {store.isSaving ? 'Resetting...' : 'Factory Reset Holidays'}
                 </button>
             </div>
 

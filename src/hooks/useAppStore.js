@@ -14,6 +14,8 @@ export const useAppStore = () => {
     const { currentUser } = useAuth();
     const [state, setState] = useState(defaultState);
     const [loading, setLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
+    const [error, setError] = useState(null);
 
     // Load User Data from Firestore on mount/login
     useEffect(() => {
@@ -37,6 +39,7 @@ export const useAppStore = () => {
                 }
             } catch (e) {
                 console.error('Failed to load user data from Firestore', e);
+                setError('Database connection failed. Please ensure Firebase Firestore is created.');
             }
             setLoading(false);
         }
@@ -47,12 +50,16 @@ export const useAppStore = () => {
     // Helper to save to Firestore
     const saveToCloud = async (newState) => {
         if (!currentUser) return;
+        setIsSaving(true);
+        setError(null);
         try {
             const userRef = doc(db, 'users', currentUser.uid);
             await setDoc(userRef, newState);
         } catch (e) {
             console.error('Failed to save user data to Firestore', e);
+            setError('Failed to save configuration. Please try again.');
         }
+        setIsSaving(false);
     };
 
     const updateSettings = async (refDate, refShift) => {
@@ -97,6 +104,8 @@ export const useAppStore = () => {
     return {
         ...state,
         loading,
+        isSaving,
+        error,
         updateSettings,
         addHoliday,
         editHoliday,

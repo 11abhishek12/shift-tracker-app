@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Holidays from './components/Holidays';
 import Settings from './components/Settings';
 import Login from './components/Login';
+import { auth } from './firebase';
 
 function AppContent() {
     const [currentTab, setCurrentTab] = useState('home');
@@ -21,6 +22,24 @@ function AppContent() {
             <div className="login-container fade-in">
                 <div className="glass-panel login-card" style={{ textAlign: 'center', color: 'var(--text-primary)' }}>
                     <h2 style={{ margin: 0 }}>Loading Profile...</h2>
+                    <p style={{ color: 'var(--text-secondary)', marginTop: '1rem', fontSize: '0.9rem' }}>
+                        Fetching your setup from the cloud. If this takes longer than 15 seconds, Firebase may not be fully initialized.
+                    </p>
+                </div>
+            </div>
+        );
+    }
+
+    if (store.error) {
+        return (
+            <div className="login-container fade-in">
+                <div className="glass-panel login-card" style={{ textAlign: 'center', borderTopColor: 'var(--holiday-gazetted-text)' }}>
+                    <h2 style={{ color: 'var(--holiday-gazetted-text)', margin: 0 }}>Database Error</h2>
+                    <p style={{ margin: '2rem 0', color: 'var(--text-primary)' }}>{store.error}</p>
+                    <button className="btn-primary" onClick={() => window.location.reload()} style={{ width: '100%', justifyContent: 'center' }}>Retry Connection</button>
+                    <div style={{ marginTop: '1.5rem' }}>
+                        <button className="btn-link" onClick={() => auth.signOut()}>Log Out and Return</button>
+                    </div>
                 </div>
             </div>
         );
